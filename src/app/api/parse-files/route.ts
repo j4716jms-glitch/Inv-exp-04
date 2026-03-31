@@ -1,5 +1,9 @@
 // app/api/parse-file/route.ts
 // Fetches + parses the Excel/CSV file SERVER-SIDE to avoid 403 CORS issues.
+// Must use nodejs runtime — xlsx requires Node.js Buffer APIs (not available in Edge).
+export const runtime = 'nodejs';
+export const maxDuration = 30;
+
 import { NextRequest, NextResponse } from 'next/server';
 import * as XLSX from 'xlsx';
 
@@ -72,6 +76,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('[/api/parse-file]', err);
-    return NextResponse.json({ error: 'Parsing failed' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Parsing failed';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
