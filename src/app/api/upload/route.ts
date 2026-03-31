@@ -1,8 +1,8 @@
 // app/api/upload/route.ts
+export const runtime = 'nodejs';
+
 import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
   try {
